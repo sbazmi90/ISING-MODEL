@@ -446,3 +446,106 @@ int main(int argc, char *argv[])
       
   return(0);
 }
+
+
+
+
+
+
+
+
+
+// Run a simulation
+
+int main(int argc, char *argv[]) 
+{
+  // Initialize global parameter variables from input file Exit with
+  // error code 1 if input file has errors
+  
+  if (!argv[1]) 
+    {
+      cerr << "Specify an input file" << endl;
+      return(1);
+    }
+  
+  if (read_input(argv[1])) 
+    {
+      return(1);
+    }
+  
+  if (!argv[2]) 
+    {
+      cerr << "Specify an output file" << endl;
+      return 1;
+    }
+  
+  ofstream ofile(argv[2]);
+  
+  if (!ofile) 
+    {
+      cerr << "Could not open output file! " << argv[2] << endl;
+      return(1);
+    }
+  
+  ofile << "#N " << N << endl;
+  ofile << "#EQMCS " << EQMCS << endl;
+  ofile << "#PMCS " << PMCS << endl;
+  ofile << "#T " << T << endl;
+  ofile << "#dT " << dT << endl;
+  ofile << "#TMAX " << TMAX << endl;
+  
+  // Keep record of seed 
+  ofile << "#SEED " << SEED << endl;
+  ofile << "#" << endl;
+  
+  engine=mt19937(SEED);
+  
+  uniform_int_distribution<> intLattice(0, N-1);
+  uniform_real_distribution<> realDist(0, 1);
+  uniform_int_distribution<> intDistLattice(0, 1);
+  
+  NSPINS = N*N;                   // Number of spins
+  NORM = 1.0 / (PMCS * NSPINS);    // Normalization constant
+  
+  int **lattice;
+  
+  // We need to initialize the pointer in order to access to the memory //
+  lattice = new int* [N];
+  
+  for (int k=0; k<N; k++)  // Saman : Start to move on lattice //
+	{
+	  lattice[k]=new int[N]; // Saman : Initialize the pointer //
+	}
+  
+
+  for (int x = 0; x < N; x++)           // Move on x direction 
+    {
+      for (int y = 0; y < N; y++)      // Move on y direction
+	{
+	  if( rd()/RAND_MAX < 0.5 )     //Determine the spin in lattice based on random generation
+	    {
+	      lattice[x][y] = J;
+	    }
+	  else
+	    lattice[x][y] = -J;
+	}
+    }
+  /************************ Saman ***********************/
+  /* Observables 
+   * M - magnetization
+   * E - energy */
+  
+  int M = 0;
+  double E = 0;        // for a given state
+  double M_avg, E_avg;    // ensemble averages
+  double M_tot, E_tot;    // sum for all states at a given temperature 
+
+  // Column headers for data file 
+  char s[68];
+  sprintf(s, "%-7s%12s%12s%12s\n", "#TEMP", "<E>", "<E>^2", "|<M>|");
+  ofile << s;
+  
+  // loop over temperatures from T to TMAX
+  // and compute E_ave and M_ave at each temperature
+  // by performing a Monte Carlo simulation at each 
+  // temperature
