@@ -203,59 +203,34 @@ int magnetization(int **lat)
 /// @param temp is the temperature
 /// @result true if the spin at (x,y) should be flipped and otherwise false
 
-bool testFlip(int **lat, int x, int y, int &dE, double temperature) 
+bool testFlip(int **lat, int x, int y, int &dE, double temp) 
 {
   // CMSC6920: calculate the change in energy corresponding to the given
   // spin flip and apply the Metropolis criterion to it to determine if
   // the spin should be flipped
-  /* Energy change upon reversal of spin is
-   *          dE = 2 * -H_i = J * s_i * sum(s_j)
-   *
-   * Note: total change is twice the bond energy
-   */
   dE = -2 * bondEnergy(lat, x, y);
-  double zeta= 1.0 * rand()/RAND_MAX;               // store the random number in this variable
-  double Pa= 0.0;                                   // store acceptance probablity here
-  bool acceptance=false;
-
-  // *************************************** //
-  // Check the condition : //
-  if(dE <= 0 )
+  
+  if (dE <= 0)
     {
-      Pa = 1; // means accept
+      return true;
     }
-  if(dE > 0 && zeta <= exp(-dE/T))
+  else
     {
-      Pa = 1; // means accept
+      double xi = realDist(engine);
+      if (xi < exp_table[dE])
+	{
+	  return true;
+	}
     }
-  if(Pa == 1)
-    {
-      acceptance  = true; // define accept
-    }
-    {
-  // set the breakpoint on this line
-      return(acceptance);
-    }
+  return(false);
 }
-
-
-
-// energies tested can only hold values of 0, 2, 4, 8
-// for efficiency, the lookup table should be configured so that exp_table[dE] directly returns exp(-dE/T)
-// i.e., exp_table[i=2] should access exp( -(dE=2) / T)
-// note that negative values of dE are always accepted, so they should not be tested by exp_table
 
 void initExpLookup(double T)
 {
-  for(int dE = 0; dE < 9; dE = dE + 1)
+  for(int i=0;i<9;++i)
     {
-      if(dE > 0) // Saman : Check the condition // 
-	{
-	  exp_table[dE] = exp(-dE/T);
-	}
-      
+      exp_table[i]=exp(-i/T);
     }
-  
 }
 
 
