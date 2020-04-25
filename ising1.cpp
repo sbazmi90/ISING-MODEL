@@ -438,14 +438,14 @@ int main(int argc, char *argv[])
 
   // We want to deallocate memory //
 
-  for(int l = 0; l < N; l++)                 // We should free the memory for new size of lattice
-    {
-      delete[] lattice[l];
-    }
-  delete[] lattice;
+  // for(int l = 0; l < N; l++)                 // We should free the memory for new size of lattice
+  // {
+  //   delete[] lattice[l];
+  //  }
+  // delete[] lattice;
       
-  return(0);
-}
+  //return(0);
+  //}
 
 
 
@@ -549,3 +549,54 @@ int main(int argc, char *argv[])
   // and compute E_ave and M_ave at each temperature
   // by performing a Monte Carlo simulation at each 
   // temperature
+  for(double temp=T;temp<TMAX;temp+=dT) 
+    {
+      /* Energy and magnetization of initial state */
+      E = energy(lattice);
+      M = magnetization(lattice);
+      initExpLookup(temp);
+      
+      // perform EQMCS steps of Monte Carlo Sampling to equilibriate the lattice at
+      // the new temperature. The energies and magnetizations from these steps should
+      // not be used to compute the totals/averages
+      // each cycle is comprised of NSPINS spin-flip attempts
+      
+      // perform PMCS steps of Monte Carlo Sampling 
+      
+      // CMSC6920: Complete this loop to perform PMCS Metropolis Monte
+      // Carlo iteration. These are the production/sampling cycles. The 
+      // Each Monte Carlo iteration is comprised of  NSPINS spip-flip attempts
+      
+      // Reset sums before start of production simulation at temperature T
+
+      E_tot = 0;
+      M_tot = 0;
+      //cout << "E = " << E << endl;
+      //cout << "M = " << M << endl;
+
+      /************************ Saman *******************/
+      // We need two loops. One for EQ steps and one for equilibrium Monte Carlo steps to take an ensemble average of the lattice by N*N.
+      for(int i = 0; i < EQMCS; i++)
+	{
+	  for(int j = 0; j < NSPINS; j++)
+	    {
+	      int x = intLattice(engine);               // Choose a random point in lattice x-direction
+	      int y = intLattice(engine);               // Choose a random point in lattice y-direction
+	      int dE;
+	      if(testFlip(lattice, x, y, dE, temp))    // Do testFlip and analyze if there is any change
+		{  
+		  lattice[x][y] = -1 * lattice[x][y];
+		  E = E + dE;
+		  M = M + 2*lattice[x][y];
+		}
+	    }
+	}
+      //cout << "E = " << E << endl;
+      //cout << "M = " << M << endl;
+      //cout << "E_tot = " << E_tot << endl;
+      //cout << "M_tot = " << M_tot << endl;
+
+
+
+      return 0;
+    }
