@@ -598,5 +598,59 @@ int main(int argc, char *argv[])
 
 
 
-      return 0;
+      for(int i = 0; i < PMCS; i++)
+	{
+	  for(int j = 0; j < NSPINS; j++)
+	    {
+	      int x = intLattice(engine);               // Choose a random point in lattice x-direction
+	      int y = intLattice(engine);               // Choose a random point in lattice y-direction
+	      int dE;
+	      if(testFlip(lattice, x, y, dE, temp))    // Do testFlip and analyze if there is any change
+		{  
+		  lattice[x][y] = -1 * lattice[x][y];
+		  E = E + dE;
+		  M = M + 2*lattice[x][y];
+		}
+	    }
+	  E_tot = E_tot + E;                          // Compute E for this configuration
+	  M_tot = M_tot + abs(M);                    // Compute M for this configuration
+	}
+      /********************* Saman ********************/
+      // You should not recalculate E and M for each Monte Carlo cycle
+      // These values can be calculated more efficiently by determining
+      // the difference compared to the previous configuration and updating
+      // E and M with that difference
+      // each Monte Carlo step should involve N^2 attempts to flip the
+      // spin of a random lattice point
+      
+      // after each Monte Carlo step calculate
+      // the sum of the energy and magnetization of new lattice
+      // configuration
+      
+      // sums of E_tot and M_tot (averages will be computed later)
+      // at the end of the Monte Carlo cycles
+           
+      // Ensemble averages (per spin) for current temperature 
+      E_avg = E_tot / (PMCS * NSPINS);
+      M_avg = M_tot / (PMCS * NSPINS);
+	   // }
+      sprintf(s, "%-7.2f%12.3f%12.3f%12.3f\n", temp,
+	      E_avg, E_avg*E_avg, fabs(M_avg) );
+      ofile << s;
+      // cout << "E = " << E << endl;
+      // cout << "M = " << M << endl;
+      // cout << "E_tot = " << E_tot << endl;
+      // cout << "M_tot = " << M_tot << endl;
+    } // END Temperature Loop
+
+  
+  /*************** Saman ******************/
+  for(int l = 0; l < N; l++)                 // We should free the memory for new size of lattice
+    {
+      delete[] lattice[l];
     }
+  delete[] lattice;
+  
+  return(0);
+}
+/*************** Saman ****************/
