@@ -19,3 +19,10 @@ a net magnetization (behaves like a magnet).
 
 In totally disordered state, spins are arranged randomly means no net magnetization.
 
+Instead of calculating averages by averaging over every state, we can select a subset of states. 
+States must be chosen without bias:
+– Markov chain
+– chosen through “random walk”
+– satisfy detail balance criterion
+
+Average properties of the system can be estimated as the average from the sampled configurations.
