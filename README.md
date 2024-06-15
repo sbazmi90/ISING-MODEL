@@ -26,3 +26,13 @@ States must be chosen without bias:
 – satisfy detail balance criterion
 
 Average properties of the system can be estimated as the average from the sampled configurations.
+
+Suggested reading:
+• A guide to Monte Carlo simulations in statistical physics
+Landau, David P., QC 174.85 M64 L36 2005, QC 174.85 M64 L36 2000
+• Understanding molecular simulation: from algorithms to applications, Frenkel, Daan
+• http://www.pha.jhu.edu/~javalab/ising/ising.html
+
+
+
+
