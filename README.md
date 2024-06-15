@@ -52,9 +52,14 @@ numberof steps in the simulation: steps
 
 Temperature range and step: temp 
 
-To analyze the finite size effect, you should run the simulation for different size starting 2*2 to 64*64.
+To analyze the finite size effect, you should run the simulation for different size starting 2*2 to 256*256.
 
-You could use in0#.txt files as input for the simulation.
+You could use in0#.txt files as input for the simulation (input directory).
+
+## Results
+
+Lattice size and energy:
+![Alt text](images/E.png)
 
 
 
