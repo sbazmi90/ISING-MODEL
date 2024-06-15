@@ -30,8 +30,32 @@ Average properties of the system can be estimated as the average from the sample
 Suggested reading:
 • A guide to Monte Carlo simulations in statistical physics
 Landau, David P., QC 174.85 M64 L36 2005, QC 174.85 M64 L36 2000
+
 • Understanding molecular simulation: from algorithms to applications, Frenkel, Daan
+
 • http://www.pha.jhu.edu/~javalab/ising/ising.html
+
+## How to run the code:
+
+g++ ising.cpp -o ising.x -Wall
+./ising.x
+
+Alternatively, you could use run.sh file which is provided in the repository.
+
+Each simulation has some inputs including:
+
+lattice size: lsize 
+
+equlibration steps: eqsteps 
+
+numberof steps in the simulation: steps 
+
+Temperature range and step: temp 
+
+To analyze the finite size effect, you should run the simulation for different size starting 2*2 to 64*64.
+
+You could use in0#.txt files as input for the simulation.
+
 
 
 
