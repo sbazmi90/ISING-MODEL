@@ -1,0 +1,4 @@
+lsize 4
+eqsteps 10000
+steps 100000
+temp 0.5 5.0 0.10
