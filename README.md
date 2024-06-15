@@ -118,6 +118,8 @@ for the phase transition. The energy plots of these sizes also are adopted with 
 Apparently, any higher lattice dimension is proposed to have better results.
 
 
+## Contact:
 
+If you have any question, feel free to contact me by sbazmi@mun.ca
 
 
